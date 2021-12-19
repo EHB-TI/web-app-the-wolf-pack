@@ -151,19 +151,14 @@ export const Kalender = () => {
     }
     if (args.type === "DeleteAlert" && !isNullOrUndefined(args.data)) {
      var deletedFilm = movies.filter(movie => movie.isReleased).find(movie => movie.titel === args.data.Subject);
-     const movie = await getMovieById(deletedFilm._id);
-     console.log(movie);
      deletedFilm.vertoningen.forEach(element => {
        if(element._id === args.data.vertoning_id){
          var indexVertoning = deletedFilm.vertoningen.indexOf(element);
          deletedFilm.vertoningen.splice(indexVertoning,1);
        }
      });
-
-     console.log(deletedFilm.vertoningen);
-
      const accessToken = await getAccessTokenSilently();
-     await UpdateMovie(deletedFilm._id, accessToken, movie);
+     await UpdateMovie(deletedFilm._id, accessToken, deletedFilm);
     }
   };
 
