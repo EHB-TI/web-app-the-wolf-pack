@@ -14,6 +14,7 @@ import { isNullOrUndefined, L10n } from "@syncfusion/ej2-base";
 import { getMovieById } from "../api/movies";
 import { useAuth0 } from "@auth0/auth0-react";
 import { UpdateMovie } from "../api/movies";
+import { v4 as uuidv4 } from 'uuid';
 
 L10n.load({
   "en-US": {
@@ -115,10 +116,10 @@ export const Kalender = () => {
                   " "
                 )[0],
                 zaal: args.data.Zaal.toString(),
-                uur: new Date(args.data.StartTime)
-                  .toTimeString()
-                  .substring(0, 5),
-                _id: args.data.vertoning_id
+
+                uur: new Date(args.data.StartTime).toTimeString().substring(0,5),
+                _id: uuidv4()
+
               });
               const accessToken = await getAccessTokenSilently();
               await UpdateMovie(film._id, accessToken, movie);
