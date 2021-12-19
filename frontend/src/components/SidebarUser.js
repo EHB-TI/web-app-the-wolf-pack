@@ -5,6 +5,28 @@ export const SidebarUser = () => {
     return (
         <div className="w-auto px-8 mt-5">
         <ul>
+        <li className="flex w-full justify-between cursor-pointer items-center mb-6">
+          <div className="flex items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              color="black"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 13v-1m4 1v-3m4 3V8M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
+              />
+            </svg>
+            <span className="ml-2 text-sidebar-color">
+              <Link to="/user/dashboard">Dashboard</Link>
+            </span>
+          </div>
+        </li>
           <li className="flex w-full justify-between cursor-pointer items-center">
             <div className="flex items-center">
               <svg

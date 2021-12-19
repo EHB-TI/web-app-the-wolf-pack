@@ -1,6 +1,3 @@
-
-const port = process.env.PORT || 8080;
-
 export async function getAllMovies() {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/movies`);
     const movies = await response.json();

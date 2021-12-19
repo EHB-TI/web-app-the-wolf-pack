@@ -1,4 +1,5 @@
 const Movie = require("./movie");
+const { v4: uuidv4 } = require('uuid');
 
 const movie1 = new Movie({
     titel: 'DRUNK',
@@ -15,19 +16,22 @@ const movie1 = new Movie({
             datum: getLocalDateString(new Date(Date.now())).split(" ").slice(1).join(" "),
             dag: getLocalDateString(new Date(Date.now())).split(" ")[0],
             uur: "20:00",
-            zaal: "1"
+            zaal: "1",
+            _id: uuidv4()
         },
         {
             datum: getLocalDateString(addDays(new Date(Date.now()), 1)).split(" ").slice(1).join(" "),
             dag: getLocalDateString(addDays(new Date(Date.now()), 1)).split(" ")[0],
             uur: "20:00",
-            zaal: "1"
+            zaal: "1",
+            _id: uuidv4()
         },
         {
             datum: getLocalDateString(addDays(new Date(Date.now()), 2)).split(" ").slice(1).join(" "),
             dag: getLocalDateString(addDays(new Date(Date.now()), 2)).split(" ")[0],
             uur: "20:00",
-            zaal: "1"
+            zaal: "1",
+            _id: uuidv4()
         },
     ],
     isReleased: true
@@ -48,19 +52,22 @@ const movie2 = new Movie({
             datum: getLocalDateString(new Date(Date.now())).split(" ").slice(1).join(" "),
             dag: getLocalDateString(new Date(Date.now())).split(" ")[0],
             uur: "20:00",
-            zaal: "2"
+            zaal: "2",
+            _id: uuidv4()
         },
         {
             datum: getLocalDateString(addDays(new Date(Date.now()), 1)).split(" ").slice(1).join(" "),
             dag: getLocalDateString(addDays(new Date(Date.now()), 1)).split(" ")[0],
             uur: "20:00",
-            zaal: "2"
+            zaal: "2",
+            _id: uuidv4()
         },
         {
             datum: getLocalDateString(addDays(new Date(Date.now()), 2)).split(" ").slice(1).join(" "),
             dag: getLocalDateString(addDays(new Date(Date.now()), 2)).split(" ")[0],
             uur: "20:00",
-            zaal: "2"
+            zaal: "2",
+            _id: uuidv4()
         },
     ],
     isReleased: true
@@ -81,19 +88,22 @@ const movie3 = new Movie({
             datum: getLocalDateString(new Date(Date.now())).split(" ").slice(1).join(" "),
             dag: getLocalDateString(new Date(Date.now())).split(" ")[0],
             uur: "17:00",
-            zaal: "2"
+            zaal: "2",
+            _id: uuidv4()
         },
         {
             datum: getLocalDateString(addDays(new Date(Date.now()), 1)).split(" ").slice(1).join(" "),
             dag: getLocalDateString(addDays(new Date(Date.now()), 1)).split(" ")[0],
             uur: "17:00",
-            zaal: "2"
+            zaal: "2",
+            _id: uuidv4()
         },
         {
             datum: getLocalDateString(addDays(new Date(Date.now()), 2)).split(" ").slice(1).join(" "),
             dag: getLocalDateString(addDays(new Date(Date.now()), 2)).split(" ")[0],
             uur: "17:00",
-            zaal: "2"
+            zaal: "2",
+            _id: uuidv4()    
         },
     ],
     isReleased: true
@@ -114,19 +124,22 @@ const movie4 = new Movie({
             datum: getLocalDateString(new Date(Date.now())).split(" ").slice(1).join(" "),
             dag: getLocalDateString(new Date(Date.now())).split(" ")[0],
             uur: "17:00",
-            zaal: "1"
+            zaal: "1",
+            _id: uuidv4()
         },
         {
             datum: getLocalDateString(addDays(new Date(Date.now()), 1)).split(" ").slice(1).join(" "),
             dag: getLocalDateString(addDays(new Date(Date.now()), 1)).split(" ")[0],
             uur: "17:00",
-            zaal: "1"
+            zaal: "1",
+            _id: uuidv4()
         },
         {
             datum: getLocalDateString(addDays(new Date(Date.now()), 2)).split(" ").slice(1).join(" "),
             dag: getLocalDateString(addDays(new Date(Date.now()), 2)).split(" ")[0],
             uur: "17:00",
-            zaal: "1"
+            zaal: "1",
+            _id: uuidv4()
         },
     ],
     isReleased: true
@@ -147,19 +160,22 @@ const movie5 = new Movie({
             datum: getLocalDateString(new Date(Date.now())).split(" ").slice(1).join(" "),
             dag: getLocalDateString(new Date(Date.now())).split(" ")[0],
             uur: "20:00",
-            zaal: "3"
+            zaal: "3",
+            _id: uuidv4()
         },
         {
             datum: getLocalDateString(addDays(new Date(Date.now()), 1)).split(" ").slice(1).join(" "),
             dag: getLocalDateString(addDays(new Date(Date.now()), 1)).split(" ")[0],
             uur: "20:00",
-            zaal: "3"
+            zaal: "3",
+            _id: uuidv4()
         },
         {
             datum: getLocalDateString(addDays(new Date(Date.now()), 2)).split(" ").slice(1).join(" "),
             dag: getLocalDateString(addDays(new Date(Date.now()), 2)).split(" ")[0],
             uur: "20:00",
-            zaal: "3"
+            zaal: "3",
+            _id: uuidv4()
         },
     ],
     isReleased: true

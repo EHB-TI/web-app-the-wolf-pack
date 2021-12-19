@@ -13,7 +13,7 @@ const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
 
 const corsOptions = {
-    origin: process.env.BASEURL,
+    origin: process.env.AUTH0_BASEURL,
     credntials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
