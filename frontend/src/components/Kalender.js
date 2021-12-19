@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getAllMovies } from "../api/movies";
-import {ScheduleComponent, Day, Week,Inject,ViewsDirective,ViewDirective,} from "@syncfusion/ej2-react-schedule";
+import {
+  ScheduleComponent,
+  Day,
+  Week,
+  Inject,
+  ViewsDirective,
+  ViewDirective,
+} from "@syncfusion/ej2-react-schedule";
 import { DropDownListComponent } from "@syncfusion/ej2-react-dropdowns";
 import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { isNullOrUndefined, L10n } from "@syncfusion/ej2-base";
@@ -14,14 +21,14 @@ L10n.load({
       newEvent: "Film event toevoegen",
       editEvent: "Film event aanpassen",
       deleteEvent: "Film event verwijderen",
-      delete:"verwijderen",
-      cancel:"annuleren"
+      delete: "verwijderen",
+      cancel: "annuleren",
     },
   },
 });
 
 export const Kalender = () => {
-
+  const { v4: uuidv4 } = require('uuid');
   const [movies, setMovies] = useState([]);
   const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
@@ -34,30 +41,32 @@ export const Kalender = () => {
     return datum;
   }
   // Het eind uur gaan terug geven van een film
-  function getEndTimeMovie(datum, uur){
+  function getEndTimeMovie(datum, uur) {
     datum.setHours(parseInt(uur) + 3);
     return datum;
   }
 
   // Array van films die in kalender verwerkt wordt
   var dataKalender = [];
+  movies
+    .filter((movie) => movie.isReleased)
+    .map((movie) => {
+      movie.vertoningen.map((vertoning) => {
+        let starttime = new Date(vertoning.datum);
+        let endtime = new Date(vertoning.datum);
+        dataKalender.push({
+          Id: movie._id,
+          Subject: movie.titel,
+          StartTime: getStartTimeMovie(starttime, vertoning.uur),
+          EndTime: getEndTimeMovie(endtime, vertoning.uur),
+          Zaal: vertoning.zaal,
+          vertoning_id: vertoning._id,
+        });
+      });
+    });
 
-  movies.filter(movie => movie.isReleased).map(movie => {
-        movie.vertoningen.map(vertoning => {
-          let starttime = new Date(vertoning.datum);
-          let endtime = new Date(vertoning.datum);
-          dataKalender.push({
-            Id: movie._id,
-            Subject: movie.titel,
-            StartTime: getStartTimeMovie(starttime, vertoning.uur),
-            EndTime: getEndTimeMovie(endtime, vertoning.uur),
-            Zaal: vertoning.zaal,
-            vertoning_id : vertoning._id,
-          });
-        })
-      })
-   // Nodig voor de data in de vertoningen te steken
-   function getLocalDateString(date) {
+  // Nodig voor de data in de vertoningen te steken
+  function getLocalDateString(date) {
     return date.toLocaleDateString("nl-BE", {
       day: "numeric",
       month: "long",
@@ -66,57 +75,94 @@ export const Kalender = () => {
     });
   }
 
-  // Als de editortemplate gesloten wordt de data gaan weergeven
   // Als de editortemplate sluit de vertoning update met de extra data en de kalender refreshen (Is beter)
-  const popupClose = async(args) => {
+  const popupClose = async (args) => {
     console.log("in popupclose");
     var film;
     if (args.type === "Editor" && !isNullOrUndefined(args.data)) {
+      console.log("In editor");
       // De film die gespeeld wordt
       let filmElement = args.element.querySelector("#Film");
       if (filmElement) {
         args.data.Film = filmElement.value;
-        film = movies.filter(movie => movie.isReleased).find(movie => movie.titel === filmElement.value);
+        film = movies
+          .filter((movie) => movie.isReleased)
+          .find((movie) => movie.titel === filmElement.value);
 
         // Begin uur en eind uur + de datum van de film die gespeeld wordt
         var end = new Date(args.data.StartTime);
         end.setHours(end.getHours() + 3);
         args.data.EndTime = end;
-         // De zaal waar de film gespeeld wordt
+        // De zaal waar de film gespeeld wordt
         let zaalElement = args.element.querySelector("#Zaal");
         if (zaalElement) {
           args.data.Zaal = zaalElement.value;
           let vertoningElement = args.element.querySelector("#vertoning_id");
-          if (vertoningElement){
+          if (vertoningElement) {
             args.data.vertoning_id = vertoningElement.innerHTML;
             const movie = await getMovieById(film._id);
             //Code voor het update van de film
-            if (args.data.vertoning_id === ""){
+            if (args.data.vertoning_id === "") {
+              console.log("if");
               // doe create
+              args.data.vertoning_id = uuidv4()
               movie.vertoningen.push({
-                datum: getLocalDateString(new Date(args.data.StartTime)).split(" ").slice(1).join(" "),
-                dag: getLocalDateString(new Date(args.data.StartTime)).split(" ")[0],
+                datum: getLocalDateString(new Date(args.data.StartTime))
+                  .split(" ")
+                  .slice(1)
+                  .join(" "),
+                dag: getLocalDateString(new Date(args.data.StartTime)).split(
+                  " "
+                )[0],
                 zaal: args.data.Zaal.toString(),
-                uur: new Date(args.data.StartTime).toTimeString().substring(0,5)
+                uur: new Date(args.data.StartTime)
+                  .toTimeString()
+                  .substring(0, 5),
+                _id: args.data.vertoning_id
               });
               const accessToken = await getAccessTokenSilently();
-              await UpdateMovie(film._id,accessToken,movie);
-            }
-            else {
-              movie.vertoningen.forEach(vertoning => {
-                if (vertoning._id === args.data.vertoning_id){
-                  vertoning.datum = getLocalDateString(new Date(args.data.StartTime)).split(" ").slice(1).join(" ");
-                  vertoning.dag = getLocalDateString(new Date(args.data.StartTime)).split(" ")[0];
-                  vertoning.uur = new Date(args.data.StartTime).toTimeString().substring(0,5);
+              await UpdateMovie(film._id, accessToken, movie);
+            } else {
+              console.log("else");
+              movie.vertoningen.forEach((vertoning) => {
+                if (vertoning._id === args.data.vertoning_id) {
+                  vertoning.datum = getLocalDateString(
+                    new Date(args.data.StartTime)
+                  )
+                    .split(" ")
+                    .slice(1)
+                    .join(" ");
+                  vertoning.dag = getLocalDateString(
+                    new Date(args.data.StartTime)
+                  ).split(" ")[0];
+                  vertoning.uur = new Date(args.data.StartTime)
+                    .toTimeString()
+                    .substring(0, 5);
                   vertoning.zaal = args.data.Zaal.toString();
                 }
               });
               const accessToken = await getAccessTokenSilently();
-              await UpdateMovie(film._id,accessToken,movie);
-            }  
-        }
+              await UpdateMovie(film._id, accessToken, movie);
+            }
+          }
         }
       }
+    }
+    if (args.type === "DeleteAlert" && !isNullOrUndefined(args.data)) {
+     var deletedFilm = movies.filter(movie => movie.isReleased).find(movie => movie.titel === args.data.Subject);
+     const movie = await getMovieById(deletedFilm._id);
+     console.log(movie);
+     deletedFilm.vertoningen.forEach(element => {
+       if(element._id === args.data.vertoning_id){
+         var indexVertoning = deletedFilm.vertoningen.indexOf(element);
+         deletedFilm.vertoningen.splice(indexVertoning,1);
+       }
+     });
+
+     console.log(deletedFilm.vertoningen);
+
+     const accessToken = await getAccessTokenSilently();
+     await UpdateMovie(deletedFilm._id, accessToken, movie);
     }
   };
 
