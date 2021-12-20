@@ -1,4 +1,7 @@
 import React from "react";
+import Winkelwagen from "../pages/Winkelwagen";
+import { Link } from "react-router-dom";
+
 
 const Vertoning = ({ vertoning }) => {
    
@@ -8,7 +11,9 @@ const Vertoning = ({ vertoning }) => {
                  <p> {vertoning.dag.toUpperCase()} </p>
                  <p className="font-extralight"> {vertoning.datum} </p>
             </div>
-            <button class="ml-2 shadow font-bold py-2 px-4 rounded hover:bg-gray-50">{vertoning.uur}</button>
+            <Link to="/winkelwagen">
+            <button class="ml-2 shadow font-bold py-2 px-4 rounded hover:bg-gray-50" type="submit">{vertoning.uur}</button>
+            </Link>
         </div>
     );
 

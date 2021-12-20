@@ -1,31 +1,24 @@
-import React from 'react'
-import SidebarUser from '../components/SidebarUser';
+import React from "react";
+import SidebarUser from "../components/SidebarUser";
 
 export const UserInstellingen = () => {
-    return (
-        <div className="App">
-        <div class="container mx-auto px-6 mt-16 text-left text-color-footer">
-          Instellingen
-          <div class="border-t-2 border-gray-300 flex flex-wrap">
-            <SidebarUser />
-            <div class="mt-2 ml-20 pr-20 float-right w-auto h-auto">
-              <input type="text" class="h-10 ml-10 w-full pr-8 pl-5 rounded shadow focus:outline-none text-center" placeholder="Zoek films ..." />
-              <div class="grid grid-cols-4 gap-2 place-content-start mt-10 overflow-auto no-scroll h-96 w-auto">
-              <div class="ml-20">
-                <img
-                  class="h-72 w-auto"
-                  src="/images/Venom2.jpg"
-                  alt="Workflow"
-                  height="20%"
-                  width="20%"
-                />
-                <p class="w-44 truncate">Venom: Let there be carnage</p>
-              </div>
-            </div>
-            </div>
+  return (
+    <div className="App font-bold flex-grow">
+      <div class="container mx-auto px-2 mt-16 text-left text-color-footer">
+        <div class="flex flex-wrap">
+          <SidebarUser />
+          <div class="mt-2 ml-20 pr-20 float-right w-auto h-auto">
+              <button
+                class="shadow focus:shadow-outline focus:outline-none text-color-label font-bold py-2 px-4 rounded ml-2"
+                type="button"
+              >
+                Uitschrijven van de website
+              </button>
+            
           </div>
         </div>
       </div>
-    )
-}
+    </div>
+  );
+};
 export default UserInstellingen;
