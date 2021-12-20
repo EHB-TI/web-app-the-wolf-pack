@@ -1,7 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getMovieById } from "../api/movies";
 
 export const Winkelwagen = () => {
   const [quantity, setQuantity] = useState(1);
+  const urlParams = new URLSearchParams(window.location.search);
+  const vertoning_id = urlParams.get('vertoning');
+  const movie_id = urlParams.get('movie');
+  const [movie, setMovie] = useState(undefined);
+  const [vertoning, setVertoning] = useState(undefined);
+
+  useEffect(() => {
+    getMovieById(movie_id).then(movie => {
+      setMovie(movie)
+      return movie;
+    }).then(movie => setVertoning(movie.vertoningen.find(vertoning => vertoning._id === vertoning_id)));
+  }, [movie_id]);
+
   const handleDecrement = () => {
     if (quantity > 1) {
       setQuantity((prevcount) => prevcount - 1);
@@ -22,26 +36,43 @@ export const Winkelwagen = () => {
             <tr class="bg-gray-100">
               <th class="px-6 py-3 font-bold whitespace-nowrap"></th>
               <th class="px-6 py-3 font-bold whitespace-nowrap">Ticket</th>
+              <th class="px-6 py-3 font-bold whitespace-nowrap">Datum en Uur</th>
+              <th class="px-6 py-3 font-bold whitespace-nowrap">Zaal</th>
               <th class="px-6 py-3 font-bold whitespace-nowrap">Aantal</th>
               <th class="px-6 py-3 font-bold whitespace-nowrap">Prijs</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody>{
+               movie &&
             <tr>
               <td>
                 <div class="flex justify-center">
                   <img
-                    src="https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aXBob25lfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                    class="object-cover h-72 w-28"
+                    src={movie.img_url}
+                    class="object-cover h-72 w-48"
                     alt="image"
                   />
                 </div>
               </td>
               <td class="p-4 px-6 text-center whitespace-nowrap">
                 <div class="flex flex-col items-center justify-center">
-                  <h3>Venom: Let There Be Carnage</h3>
+                  <h3>{movie.titel}</h3>
                 </div>
               </td>
+              {
+                vertoning &&  <>
+                <td class="p-4 px-6 text-center whitespace-nowrap">
+                <div class="flex flex-col items-center justify-center">
+                  <h3>{vertoning.datum} {vertoning.uur}</h3>
+                </div>
+                </td>
+                <td class="p-4 px-6 text-center whitespace-nowrap">
+                <div class="flex flex-col items-center justify-center">
+                  <h3>{vertoning.zaal}</h3>
+                </div>
+              </td>
+              </>
+              }
               <td class="p-4 px-6 text-center whitespace-nowrap">
                 <div>
                   <button onClick={handleDecrement}>
@@ -86,8 +117,9 @@ export const Winkelwagen = () => {
                   </button>
                 </div>
               </td>
-              <td class="p-4 px-6 text-center whitespace-nowrap">€10</td>
+              <td class="p-4 px-6 text-center whitespace-nowrap">€9</td>
             </tr>
+        }
           </tbody>
         </table>
         <div class="mt-4">
