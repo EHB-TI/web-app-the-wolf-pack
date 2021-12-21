@@ -14,6 +14,7 @@ const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
 const Order = require('./Order');
 const fs = require('fs');
+const OrderModel = require("./DB/order");
 
 const corsOptions = {
     origin: process.env.AUTH0_BASEURL,
@@ -188,3 +189,28 @@ app.post("/order", async(req,res) => {
     res.contentType("application/pdf");
     fs.createReadStream(path).pipe(res);
 });
+
+app.post("/orders", async(req,res) => {
+    const email = req.body.email;
+    const url = req.body.url;
+    const date = getDate();
+    const order = new OrderModel({order_url: url, date: date, user: email});
+    await order.save();
+    res.status(201).send({});
+});
+
+app.get("/orders", async(req,res) => {
+    const email = req.query.email;
+    const orders = await OrderModel.find({user:email});
+    res.send(orders);
+});
+
+function getDate(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    today = dd + '/' + mm + '/' + yyyy;
+    return today;
+}

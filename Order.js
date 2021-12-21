@@ -57,7 +57,7 @@ class Order {
 	for (i = 0; i < this.order.items.length; i++) {
 		const item = this.order.items[i];
 		const position = orderTableTop + (i + 1) * 30;
-		this.generateTableRow(doc,position,item.description, this.order.vertoning.zaal, this.order.vertoning.datum , this.order.vertoning.uur,`${(item.amount_total / item.quantity).toString().slice(0,1)}€`,item.quantity,`${item.amount_total.toString().slice(0,2)}€`);
+		this.generateTableRow(doc,position,item.description, this.order.vertoning.zaal, this.order.vertoning.datum , this.order.vertoning.uur,`${(item.amount_total / item.quantity).toString().slice(0,1)}€`,item.quantity,`${item.amount_total.toString().length > 3 ? item.amount_total.toString().slice(0,2) :  item.amount_total.toString().slice(0,1)}€ `);
 		this.generateHr(doc, position + 20);
 	}
  }

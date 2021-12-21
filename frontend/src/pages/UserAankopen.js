@@ -1,7 +1,26 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
+import {useAuth0} from '@auth0/auth0-react';
 import SidebarUser from '../components/SidebarUser';
 
 export const UserAankopen = () => {
+
+    const {user } = useAuth0();
+    const [orders, setOrders] = useState(undefined);
+
+    useEffect(() => {
+        (async() => {
+            if (user){
+              const res = await fetch(`${process.env.REACT_APP_API_URL}/orders?email=${user.email}`, {
+                  method: 'GET',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+              });
+              const data = await res.json();
+              setOrders(data);
+            }
+        })();
+    }, [user]);
     return (
         <div className="App font-bold flex-grow">
         <div class="container mx-auto px-2 mt-16 text-left text-color-footer">
@@ -27,38 +46,28 @@ export const UserAankopen = () => {
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-              <tr>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <div>
-                        Dinsdag 21/12/2021
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center">
-                      <div>
-                        DitIsZogezegdDePdf.pdf
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <div>
-                        Maandag 20/12/2021
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center">
-                      <div>
-                        DitIsZogezegdDePdf.pdf
-                      </div>
-                    </div>
-                  </td>
-                </tr>
+                 {
+                      orders && orders.map((order, index) => { 
+                        return (
+                          <tr>
+                              <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                  <div>
+                                     {order.date}
+                                  </div>
+                                </div>
+                              </td>
+                              <td class="px-6 py-4 whitespace-nowrap">
+                              <div class="flex items-center">
+                                  <button onClick={() => window.open(order.order_url, '_blank').focus()}>
+                                    PDF
+                                  </button>
+                                </div>
+                              </td>
+                          </tr>
+                        )
+                   })
+                }
               </tbody>
             </table>
             </div>

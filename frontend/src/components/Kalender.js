@@ -29,7 +29,6 @@ L10n.load({
 });
 
 export const Kalender = () => {
-  const { v4: uuidv4 } = require('uuid');
   const [movies, setMovies] = useState([]);
   const { getAccessTokenSilently } = useAuth0();
   useEffect(() => {
