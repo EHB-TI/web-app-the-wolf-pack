@@ -1,5 +1,21 @@
 import React from "react";
 import {useAuth0} from "@auth0/auth0-react";
+import { initializeApp } from "firebase/app";
+import { getStorage, ref , uploadBytes,getDownloadURL  } from "firebase/storage";
+
+// Set the configuration for your app
+// TODO: Replace with your app's config object
+const config = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECTID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGEBUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APPID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID
+};  
+
+const firebaseApp = initializeApp(config);
 
 const Success = () => {
 
@@ -61,6 +77,9 @@ const Success = () => {
 
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
+        const storage = getStorage(firebaseApp);
+        const storageRef = ref(storage, `/pdf/order.pdf`);
+        await uploadBytes(storageRef, blob);
         window.open(url, '_blank').focus();
     }
 

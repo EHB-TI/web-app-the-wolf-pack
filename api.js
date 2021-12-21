@@ -179,13 +179,12 @@ app.use((error, req, res, next) => {
     });
 });
 
-app.post("/order", (req,res) => {
+app.post("/order", async(req,res) => {
     const order = req.body.order;
     const customer = req.body.customerObject;
     const orderData = new Order(customer, order);
     orderData.generatePDF();
     const path = './order.pdf';
     res.contentType("application/pdf");
-    console.log(fs.createReadStream(path));
     fs.createReadStream(path).pipe(res);
 });
