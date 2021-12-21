@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const stripe = require('stripe')(process.env.STRIPE_API_KEY);
 const app = express();
 const port = process.env.PORT || 8080;
 const Movie = require("./DB/movie");
@@ -123,6 +124,43 @@ app.delete("/movies/:id",checkToken, checkForAdminPermissions, async(req,res, ne
        next(err);
    }
 });
+
+// Stripe
+app.post('/create-checkout-session', async(req,res) => {
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: [
+            ...req.body.items.map(item => ({
+                price_data : {
+                    product_data: {
+                        name: item.name,
+                        description: item.description,
+                    },
+                    currency: 'EUR', 
+                    unit_amount: item.price   
+                    },
+                quantity: item.quantity
+                })
+            )
+        ],
+        mode: 'payment',
+        success_url: `${process.env.CLIENT_URL}/success?id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.CLIENT_URL}/`,
+    });
+    res.send({
+        id: session.id,
+        url: session.url
+    });
+});
+
+app.get("/checkout-session", async(req,res) => {
+   const session = await stripe.checkout.sessions.retrieve(req.query.id, {
+       expand: ['line_items']
+   });
+
+   res.send(session);
+});
+
 
 app.use((error, req, res, next) => {
     if (error.name === "UnauthorizedError") {

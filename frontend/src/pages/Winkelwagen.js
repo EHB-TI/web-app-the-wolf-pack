@@ -14,7 +14,7 @@ export const Winkelwagen = () => {
       setMovie(movie)
       return movie;
     }).then(movie => setVertoning(movie.vertoningen.find(vertoning => vertoning._id === vertoning_id)));
-  }, [movie_id]);
+  });
 
   const handleDecrement = () => {
     if (quantity > 1) {
@@ -27,6 +27,28 @@ export const Winkelwagen = () => {
       setQuantity((prevcount) => prevcount + 1);
     }
   };
+
+  const toStripeCheckout = (e) => {
+    e.preventDefault();
+    console.log()
+    console.log("inside");
+    fetch ( `${process.env.REACT_APP_API_URL}/create-checkout-session`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        items: [{
+           quantity : quantity,
+           name: movie.titel,
+           price: 900,
+           image: movie.img_url,
+           "description": `${vertoning.datum} ${vertoning.uur}\nZaal: ${vertoning.zaal}`
+        }]
+    })
+  }).then(res => res.json()).then(({url, id}) => window.location = url)
+  .catch(err => console.log(err));
+}
 
   return (
     <div class="container p-8 mx-auto font-bold text-color-footer">
@@ -50,7 +72,7 @@ export const Winkelwagen = () => {
                   <img
                     src={movie.img_url}
                     class="object-cover h-72 w-48"
-                    alt="image"
+                    alt="Workflow"
                   />
                 </div>
               </td>
@@ -123,7 +145,7 @@ export const Winkelwagen = () => {
           </tbody>
         </table>
         <div class="mt-4">
-          <button class="shadow font-bold py-2 px-4 rounded hover:bg-gray-50 w-full text-center">
+          <button class="shadow font-bold py-2 px-4 rounded hover:bg-gray-50 w-full text-center" onClick={toStripeCheckout}>
             Betalen
           </button>
         </div>
@@ -131,4 +153,5 @@ export const Winkelwagen = () => {
     </div>
   );
 };
+
 export default Winkelwagen;
