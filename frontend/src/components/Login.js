@@ -73,6 +73,9 @@ const Login = ({ authorized }) => {
           <div class="py-3 px-2 text-lg text-color-footer" role="none">
             <button onClick={() => logout()}> Sign out </button>
           </div>
+          <div class="py-3 px-2 text-lg text-color-footer" role="none">
+            <button onClick={() => window.location = '/user/instellingen' }> UserDashboard </button>
+          </div>
         </div>
       </div>
     );
