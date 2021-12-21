@@ -43,6 +43,9 @@ export const Winkelwagen = () => {
            name: movie.titel,
            price: 900,
            image: movie.img_url,
+           zaal: vertoning.zaal,
+           uur: vertoning.uur,
+           datum: vertoning.datum,
            "description": `${vertoning.datum} ${vertoning.uur}\nZaal: ${vertoning.zaal}`
         }]
     })

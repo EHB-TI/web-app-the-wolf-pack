@@ -12,10 +12,12 @@ const mongoose = require("mongoose");
 const jwtAuthz = require('express-jwt-authz');
 const jwt = require('express-jwt');
 const jwks = require('jwks-rsa');
+const Order = require('./Order');
+const fs = require('fs');
 
 const corsOptions = {
     origin: process.env.AUTH0_BASEURL,
-    credntials: true,
+    credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   }
@@ -144,7 +146,7 @@ app.post('/create-checkout-session', async(req,res) => {
             )
         ],
         mode: 'payment',
-        success_url: `${process.env.CLIENT_URL}/success?id={CHECKOUT_SESSION_ID}`,
+        success_url: `${process.env.CLIENT_URL}/success?id={CHECKOUT_SESSION_ID}&zaal=${req.body.items[0].zaal}&datum=${req.body.items[0].datum}&uur=${req.body.items[0].uur}`,
         cancel_url: `${process.env.CLIENT_URL}/`,
     });
     res.send({
@@ -155,12 +157,11 @@ app.post('/create-checkout-session', async(req,res) => {
 
 app.get("/checkout-session", async(req,res) => {
    const session = await stripe.checkout.sessions.retrieve(req.query.id, {
-       expand: ['line_items']
+       expand: ['line_items', 'payment_intent', 'customer']
    });
 
    res.send(session);
 });
-
 
 app.use((error, req, res, next) => {
     if (error.name === "UnauthorizedError") {
@@ -178,3 +179,13 @@ app.use((error, req, res, next) => {
     });
 });
 
+app.post("/order", (req,res) => {
+    const order = req.body.order;
+    const customer = req.body.customerObject;
+    const orderData = new Order(customer, order);
+    orderData.generatePDF();
+    const path = './order.pdf';
+    res.contentType("application/pdf");
+    console.log(fs.createReadStream(path));
+    fs.createReadStream(path).pipe(res);
+});
