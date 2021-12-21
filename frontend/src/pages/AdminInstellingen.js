@@ -17,15 +17,12 @@ export const AdminInstellingen = () => {
   // }
 
   // console.log(getUsers());
-  // const getToken = async () =>{
-  //   const status = await getManagmentAccessApiToken();
-  //   if (status === 204){
-  //     window.location.reload();
-  //   }
-  // }
-
-  // console.log(getToken());
-
+  const getToken = async () =>{
+    const token = await getManagmentAccessApiToken();
+    console.log(token.access_token);
+  }
+  //Alle users gaan ophalen en weergeven
+  getToken();
   return (
     <div className="App font-bold">
       <div class="container mx-auto px-2 mt-16 text-left text-color-footer">

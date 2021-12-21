@@ -1,3 +1,24 @@
+// POST voor het opvragen van een management api access token
+export async function getManagmentAccessApiToken(){
+var axios = require("axios").default;
+// POST voor management api access token te krijgen
+var options = {
+  method: 'POST',
+  url: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/oauth/token`,
+  headers: {'content-type': 'application/json'},
+  data: {
+    grant_type: 'client_credentials',
+    client_id: 'xoLVQ2s1wWCntDRgQ64TD8JNF205iC3L',
+    client_secret: '0O2aObPZrLEn2qOOHikjwrnzehIXXvSetSluwi4SY2LnzCNRxRXLVwZP5A7o8VV7',
+    audience: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/`
+  }
+};
+
+const resp = await axios.request(options);
+return resp.data;
+
+}
+
 // export async function getAllUsers(accessToken){
 //     const response = await fetch (`https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/users`, {
 //         method: 'GET',
@@ -7,26 +28,4 @@
 //     });
 //     const users = await response.json();
 //     return users;
-// }
-// export async function getManagmentAccessApiToken(){
-//     const response = await fetch (`https://${process.env.REACT_APP_AUTH0_DOMAIN}/oauth/token`, {
-//         method: 'POST',
-//         headers: {
-//             'content-type': 'application/x-www-form-urlencoded'
-//         },
-//         body: JSON.stringify({
-//             client_id: process.env.REACT_APP_AUTH0_CLIENT_ID,
-//             client_secret: process.env.REACT_APP_AUTH0_CLIENT_SECRET,
-//             audience: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2`,
-//             grant_type: "client_credentials",
-//         })
-//     }).then(function (resp){
-//         return resp.json();
-//     }).then(function (data){
-//         console.log('token',data);
-//     }).catch(function (err){
-//         console.log('Something went wrong', err);
-//     });
-
-//     return response;
 // }
