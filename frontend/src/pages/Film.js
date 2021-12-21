@@ -53,7 +53,7 @@ export const Film = () => {
               <div class="ml-32 font-bold">
                   <p class="text-black font-extrabold">Tickets</p>
                   {
-                    movie.vertoningen.map(vertoning => <Vertoning vertoning={vertoning} />)
+                    movie.vertoningen.map(vertoning => <Vertoning vertoning={vertoning} movie={movie}/>)
                   }
               </div> 
               }  

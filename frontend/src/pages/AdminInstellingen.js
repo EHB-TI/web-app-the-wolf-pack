@@ -1,7 +1,31 @@
 import React from "react";
+import { getAllUsers, getManagmentAccessApiToken } from "../api/users";
+import { useAuth0 } from "@auth0/auth0-react";
 import SidebarAdmin from "../components/SidebarAdmin";
 
 export const AdminInstellingen = () => {
+
+  // const { getAccessTokenSilently } = useAuth0();
+    
+
+  // const getUsers = async () => {
+  //     const accessToken = await getAccessTokenSilently();
+  //     const status = await getAllUsers(accessToken);
+  //     if (status === 204){
+  //       window.location.reload();
+  //     }
+  // }
+
+  // console.log(getUsers());
+  // const getToken = async () =>{
+  //   const status = await getManagmentAccessApiToken();
+  //   if (status === 204){
+  //     window.location.reload();
+  //   }
+  // }
+
+  // console.log(getToken());
+
   return (
     <div className="App font-bold">
       <div class="container mx-auto px-2 mt-16 text-left text-color-footer">

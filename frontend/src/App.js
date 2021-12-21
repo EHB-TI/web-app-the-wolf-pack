@@ -19,7 +19,9 @@ import React, {useState, useEffect} from 'react';
 import isAdmin from './Util.js';
 import {useAuth0} from '@auth0/auth0-react';
 import NotLoggedIn from './components/NotLoggedIn';
-import UserDashboard from './pages/UserDashboard';
+import UserAankopen from './pages/UserAankopen';
+import Winkelwagen from './pages/Winkelwagen';
+import Success from './components/Success';
 
 function App() {
 
@@ -78,8 +80,10 @@ function App() {
             <Route path='/admin/instellingen' element={<NotLoggedIn />} />
             <Route path='/admin/kalender' element={<NotLoggedIn />} /> </>
           }
-          <Route path="/user/dashboard" element={<UserDashboard />} />
+          <Route path="/winkelwagen" element={<Winkelwagen />} />
+          <Route path="/user/aankopen" element={<UserAankopen />} />
           <Route path="/user/instellingen" element={<UserInstellingen />} />
+          <Route path="/success" element={<Success />} />
         </Routes>
         <Footer />
       </div>

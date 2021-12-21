@@ -8,10 +8,9 @@
 
 # testing
 /coverage
-
 # production
 /build
-
+/order.pdf
 .env
 
 # misc
