@@ -23,7 +23,36 @@ const Success = () => {
 
     const {user } = useAuth0();
     const [downloadUrl, setDownloadUrl] = useState(undefined);
-    const [isLoading, setIsLoading] = useState(false);   
+    const [isLoading, setIsLoading] = useState(false);  
+    
+    
+    async function getReadableStream(body){
+        const reader = body.getReader();
+
+        return await new ReadableStream({
+            start(controller) {
+            // The following function handles each data chunk
+            function push() {
+                // "done" is a Boolean and value a "Uint8Array"
+                reader.read().then( ({done, value}) => {
+                // If there is no more data to read
+                if (done) {
+                    console.log('done', done);
+                    controller.close();
+                    return;
+                }
+                // Get the data and send it to the browser via the controller
+                controller.enqueue(value);
+                // Check chunks by logging to the console
+                console.log(done, value);
+                push();
+                })
+            }
+
+            push();
+            }
+            });
+        }
 
     useEffect(() => {
         (async() => {
@@ -58,7 +87,6 @@ const Success = () => {
                     }
                 });
                 const {line_items} = await res.json();
-                console.log(line_items);
                 const order = {
                     items: line_items.data,
                     order_nr: id,
@@ -80,10 +108,12 @@ const Success = () => {
                     },
                     body: JSON.stringify({customerObject,order})        
                 });
-
-                const blob = await response.blob();
+                const stream = await getReadableStream(response.body);
+                const blob = await new Response(stream, { headers: { "Content-Type": "application/pdf" } }).blob();;
                 const storage = getStorage(firebaseApp);
                 const storageRef = ref(storage, `/pdf/${uuidv4()}.pdf`);
+                console.log("Saving in storage");
+                console.log(blob);
                 const snapshot = await uploadBytes(storageRef, blob);
                 const downloadURL = await getDownloadURL(snapshot.ref);
                 setDownloadUrl(downloadURL);

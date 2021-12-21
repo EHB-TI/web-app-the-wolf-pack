@@ -184,10 +184,14 @@ app.post("/order", async(req,res) => {
     const order = req.body.order;
     const customer = req.body.customerObject;
     const orderData = new Order(customer, order);
-    orderData.generatePDF();
-    const path = './order.pdf';
-    res.contentType("application/pdf");
-    fs.createReadStream(path).pipe(res);
+    const stream = res.writeHead(200, {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment; filename=sample.pdf',
+    });
+    orderData.generatePDF(
+        (chunck) => stream.write(chunck),
+        () => stream.end()
+    );
 });
 
 app.post("/orders", async(req,res) => {

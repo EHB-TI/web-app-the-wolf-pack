@@ -7,13 +7,14 @@ class Order {
     this.order = order;
   }
 
-  generatePDF() {
+  generatePDF(dataCallBack, endCallBack) {
     let doc = new PDFDocument({ margin: 50 });
 	this.generateHeader(doc);
 	this.generateCustomerInformation(doc);
 	this.generateOrderTable(doc);
 	this.generateFooter(doc);
-    doc.pipe(fs.createWriteStream('order.pdf'));
+	doc.on('data', dataCallBack);
+	doc.on('end', endCallBack);
 	doc.end();
   }
 
