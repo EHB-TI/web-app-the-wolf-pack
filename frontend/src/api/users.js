@@ -33,7 +33,7 @@ export async function getAllUsers(accessToken){
 export async function deleteUser(accessToken,user_id){
   var axios = require("axios").default;
   var options = {
-    method: 'GET',
+    method: 'DELETE',
     url: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/users/${user_id}`,
     headers: {'authorization': `Bearer ${accessToken}`},
   };

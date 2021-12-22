@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { getAllUsers, getManagmentAccessApiToken } from "../api/users";
 import { useAuth0 } from "@auth0/auth0-react";
 import SidebarAdmin from "../components/SidebarAdmin";
+import AdminRoles from "../components/AdminRoles";
 
 export const AdminInstellingen = () => {
+
+  const[allusers,setAllusers] = useState([]);
 
   // Alle user opvragen en in die table steken
   const getToken = async () =>{
     const token = await getManagmentAccessApiToken();
-    console.log(token.access_token);
     const users = await getAllUsers(token.access_token);
-    console.log(users);
+    
+    return users;
   }
+  useEffect(async () =>{
+    getToken().then(allusers => setAllusers(allusers))
+  },[]);
 
+console.log(allusers.map(user => user));
   return (
     <div className="App font-bold">
       <div class="container mx-auto px-2 mt-16 text-left text-color-footer">
@@ -40,57 +47,12 @@ export const AdminInstellingen = () => {
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <div>
-                        jane.cooper@example.com
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <select>
-                      <option value="Klant">Klant</option>
-                      <option value="Beheerder">Beheerder</option>
-                    </select>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-right">
-                    <button class="ml-2 font-bold py-2 px-4">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-                        />
-                      </svg>
-                    </button>
-                    <button class="ml-2 font-bold py-2 px-4">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
+                {
+                 allusers.map(user => <AdminRoles user={user} key={user.user_id}/>)
+                }
               </tbody>
             </table>
+            <button class="shadow font-bold py-2 px-4 rounded hover:bg-gray-50 w-full text-center">Opslaan</button>
           </div>
         </div>
       </div>
