@@ -5,24 +5,14 @@ import SidebarAdmin from "../components/SidebarAdmin";
 
 export const AdminInstellingen = () => {
 
-  // const { getAccessTokenSilently } = useAuth0();
-    
-
-  // const getUsers = async () => {
-  //     const accessToken = await getAccessTokenSilently();
-  //     const status = await getAllUsers(accessToken);
-  //     if (status === 204){
-  //       window.location.reload();
-  //     }
-  // }
-
-  // console.log(getUsers());
+  // Alle user opvragen en in die table steken
   const getToken = async () =>{
     const token = await getManagmentAccessApiToken();
     console.log(token.access_token);
+    const users = await getAllUsers(token.access_token);
+    console.log(users);
   }
-  //Alle users gaan ophalen en weergeven
-  getToken();
+
   return (
     <div className="App font-bold">
       <div class="container mx-auto px-2 mt-16 text-left text-color-footer">

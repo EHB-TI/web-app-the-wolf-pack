@@ -1,7 +1,6 @@
 // POST voor het opvragen van een management api access token
 export async function getManagmentAccessApiToken(){
 var axios = require("axios").default;
-// POST voor management api access token te krijgen
 var options = {
   method: 'POST',
   url: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/oauth/token`,
@@ -18,14 +17,26 @@ const resp = await axios.request(options);
 return resp.data;
 
 }
-
-// export async function getAllUsers(accessToken){
-//     const response = await fetch (`https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/users`, {
-//         method: 'GET',
-//         headers: {
-//             'Authorization': `Bearer ${accessToken}`
-//         }
-//     });
-//     const users = await response.json();
-//     return users;
-// }
+// GET voor het opvragen van alle users
+export async function getAllUsers(accessToken){
+  var axios = require("axios").default;
+  var options = {
+    method: 'GET',
+    url: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/users`,
+    headers: {'authorization': `Bearer ${accessToken}`},
+  };
+  
+  const resp = await axios.request(options);
+  return resp.data;
+}
+// DELETE voor het uitschrijven vanuit de website
+export async function deleteUser(accessToken,user_id){
+  var axios = require("axios").default;
+  var options = {
+    method: 'GET',
+    url: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/users/${user_id}`,
+    headers: {'authorization': `Bearer ${accessToken}`},
+  };
+  const resp = await axios.request(options);
+  return resp.data;
+}

@@ -1,12 +1,23 @@
 import React from "react";
-import { deleteUser, getManagmentAccessApiToken } from "../api/users";
+import { deleteUser, getAllUsers,getManagmentAccessApiToken } from "../api/users";
 import SidebarUser from "../components/SidebarUser";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export const UserInstellingen = () => {
+  const {getIdTokenClaims} = useAuth0();
 
   const getToken = async () =>{
+    // Getting the management access api token
     const token = await getManagmentAccessApiToken();
     console.log(token.access_token);
+    const users = await getAllUsers(token.access_token);
+    console.log(users);
+    // Current user that is logged in
+    const claims = await getIdTokenClaims();
+    console.log(claims.sub);
+    // Deleting user
+    const user = await deleteUser(token.access_token,claims.sub);
+    console.log(user);
   }
 
   return (
