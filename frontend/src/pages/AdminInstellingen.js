@@ -12,7 +12,6 @@ export const AdminInstellingen = () => {
   const getUsers = async () =>{
     const token = await getManagmentAccessApiToken();
     const users = await getAllUsers(token.access_token);
-    console.log(users);
     return users;
   }
   const getRole = async (user) =>{
@@ -24,42 +23,41 @@ export const AdminInstellingen = () => {
     getUsers().then(allusers => setAllusers(allusers))
   },[]);
 
-console.log(allusers.map(user => user));
+allusers.map(user => user);
   return (
     <div className="App font-bold">
-      <div class="container mx-auto px-2 mt-16 text-left text-color-footer">
-        <div class="border-gray-300 flex flex-wrap">
+      <div className="container mx-auto px-2 mt-16 text-left text-color-footer">
+        <div className="border-gray-300 flex flex-wrap">
           <SidebarAdmin />
-          <div class="mt-2 ml-20 pr-20 float-right w-3/4 h-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
+          <div className="mt-2 ml-20 pr-20 float-right w-3/4 h-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
                 <tr>
                   <th
                     scope="col"
-                    class="px-6 py-3 text-left"
+                    className="px-6 py-3 text-left"
                   >
                     Email
                   </th>
                   <th
                     scope="col"
-                    class="px-6 py-3 text-left"
+                    className="px-6 py-3 text-left"
                   >
                     Role
                   </th>
                   <th scope="col" class="relative px-6 py-3">
-                    <span class="sr-only">Edit</span>
+                    <span className="sr-only">Edit</span>
                   </th>
                 </tr>
               </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white divide-y divide-gray-200">
                 {
                  allusers.map(user => <AdminRoles user={user} rol={getRole(user).then(function(response) {
-                  return response
+                  return response;
                 })} key={user.user_id}/>)
                 }
               </tbody>
             </table>
-            <button class="shadow font-bold py-2 px-4 rounded hover:bg-gray-50 w-full text-center">Opslaan</button>
           </div>
         </div>
       </div>

@@ -37,14 +37,14 @@ const Success = () => {
                 reader.read().then( ({done, value}) => {
                 // If there is no more data to read
                 if (done) {
-                    console.log('done', done);
+                    //console.log('done', done);
                     controller.close();
                     return;
                 }
                 // Get the data and send it to the browser via the controller
                 controller.enqueue(value);
                 // Check chunks by logging to the console
-                console.log(done, value);
+                //console.log(done, value);
                 push();
                 })
             }
@@ -112,8 +112,8 @@ const Success = () => {
                 const blob = await new Response(stream, { headers: { "Content-Type": "application/pdf" } }).blob();;
                 const storage = getStorage(firebaseApp);
                 const storageRef = ref(storage, `/pdf/${uuidv4()}.pdf`);
-                console.log("Saving in storage");
-                console.log(blob);
+                //console.log("Saving in storage");
+                //console.log(blob);
                 const snapshot = await uploadBytes(storageRef, blob);
                 const downloadURL = await getDownloadURL(snapshot.ref);
                 setDownloadUrl(downloadURL);

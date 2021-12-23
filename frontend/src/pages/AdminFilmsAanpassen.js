@@ -58,7 +58,7 @@ const AdminFilmsAanpassen = () => {
       const storageRef = ref(storage, `/images/${temp.name}`);
       const snapshot = await uploadBytes(storageRef, temp);
       const downloadURL = await getDownloadURL(snapshot.ref);
-      console.log(downloadURL);
+      //console.log(downloadURL);
       setImg(async(img) => {
         img = downloadURL;
         const movie = {
