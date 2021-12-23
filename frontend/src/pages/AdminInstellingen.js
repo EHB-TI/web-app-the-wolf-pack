@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllUsers, getManagmentAccessApiToken } from "../api/users";
+import { getAllUsers, getManagmentAccessApiToken,getRoleUser } from "../api/users";
 import { useAuth0 } from "@auth0/auth0-react";
 import SidebarAdmin from "../components/SidebarAdmin";
 import AdminRoles from "../components/AdminRoles";
@@ -9,14 +9,19 @@ export const AdminInstellingen = () => {
   const[allusers,setAllusers] = useState([]);
 
   // Alle user opvragen en in die table steken
-  const getToken = async () =>{
+  const getUsers = async () =>{
     const token = await getManagmentAccessApiToken();
     const users = await getAllUsers(token.access_token);
-    
+    console.log(users);
     return users;
   }
+  const getRole = async (user) =>{
+    const token = await getManagmentAccessApiToken();
+    const gett = await getRoleUser(token.access_token,user.user_id);
+    return gett[0]
+ }
   useEffect(async () =>{
-    getToken().then(allusers => setAllusers(allusers))
+    getUsers().then(allusers => setAllusers(allusers))
   },[]);
 
 console.log(allusers.map(user => user));
@@ -48,7 +53,7 @@ console.log(allusers.map(user => user));
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 {
-                 allusers.map(user => <AdminRoles user={user} key={user.user_id}/>)
+                 allusers.map(user => <AdminRoles user={user} rol={getRole(user)} key={user.user_id}/>)
                 }
               </tbody>
             </table>

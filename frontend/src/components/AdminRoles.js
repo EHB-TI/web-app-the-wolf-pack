@@ -1,8 +1,7 @@
 import React from 'react'
-import { deleteUser,getManagmentAccessApiToken } from "../api/users";
+import { deleteUser,getRoleUser,getManagmentAccessApiToken,assignRoleAdminToUser,deleteAdminRoleFromUser } from "../api/users";
 
-export const AdminRoles = ({user}) => {
-    
+export const AdminRoles = ({user,rol}) => {
   const uitschrijven = async () =>{
     // Getting the management access api token
     const token = await getManagmentAccessApiToken();
@@ -10,20 +9,38 @@ export const AdminRoles = ({user}) => {
     const del = await deleteUser(token.access_token,user.user_id);
     window.location.reload();
   }
-    return (
+  const changeRole = async () =>{
+    const token = await getManagmentAccessApiToken();
+    const gett = await getRoleUser(token.access_token,user.user_id);
+    console.log(gett);
+    console.log(rol);
+    console.log(user.user_id);
+     if(gett[0] === undefined){
+       console.log('Dit moet een admin worden');
+       const wordtAdmin = await assignRoleAdminToUser(token.access_token,user.user_id,process.env.REACT_APP_AUTH0_ROLE_ID);
+       // page refresh
+       document.getElementById('roluser').innerHTML = 'Admin';
+     }
+     else{
+       console.log('Dit moet een klant worden');
+       const wordtKlant = await deleteAdminRoleFromUser(token.access_token,user.user_id,process.env.REACT_APP_AUTH0_ROLE_ID);
+       // page refresh
+       document.getElementById('roluser').innerHTML = 'Klant';
+     }
+   
+  }
+      return (
         <tr>
         <td class="px-6 py-4 whitespace-nowrap">
           <div class="flex items-center">
-            <p>
+            <p id='txt'>
               {user.email}
             </p>
           </div>
         </td>
         <td class="px-6 py-4 whitespace-nowrap">
-          <select>
-            <option value="Klant">Klant</option>
-            <option value="Beheerder">Beheerder</option>
-          </select>
+          <p id='roluser'>Dit moet een rol zijn</p>
+          <button onClick={changeRole}>Verander rol</button>
         </td>
         <td class="px-6 py-4 whitespace-nowrap text-right">
           <button class="ml-2 font-bold py-2 px-4" onClick={uitschrijven}>

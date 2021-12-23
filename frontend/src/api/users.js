@@ -40,3 +40,38 @@ export async function deleteUser(accessToken,user_id){
   const resp = await axios.request(options);
   return resp.data;
 }
+// GET voor het opvragen van de roles van een user
+export async function getRoleUser(accessToken,user_id){
+  var axios = require("axios").default;
+  var options = {
+    method: 'GET',
+    url: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/users/${user_id}/roles`,
+    headers: {'authorization': `Bearer ${accessToken}`},
+  };
+  const resp = await axios.request(options);
+  return resp.data;
+}
+// POST voor het toekennen van rol Admin
+export async function assignRoleAdminToUser(accessToken,user_id,role_id){
+  var axios = require("axios").default;
+  var options = {
+    method: 'POST',
+    url: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/users/${user_id}/roles`,
+    headers: { 'content-type': 'application/json',authorization: `Bearer ${accessToken}`, 'cache-control': 'no-cache'},
+    data: {roles: [role_id]},
+  };
+  const resp = await axios.request(options);
+  return resp.data;
+}
+// DELETE voor verwijderen van de rol Admin
+export async function deleteAdminRoleFromUser(accessToken,user_id,role_id){
+  var axios = require("axios").default;
+  var options = {
+    method: 'DELETE',
+    url: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/users/${user_id}/roles`,
+    headers: { 'content-type': 'application/json',authorization: `Bearer ${accessToken}`, 'cache-control': 'no-cache'},
+    data: {roles: [role_id]},
+  };
+  const resp = await axios.request(options);
+  return resp.data;
+}
