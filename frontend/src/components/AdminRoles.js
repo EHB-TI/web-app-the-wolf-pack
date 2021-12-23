@@ -2,6 +2,23 @@ import React from 'react'
 import { deleteUser,getRoleUser,getManagmentAccessApiToken,assignRoleAdminToUser,deleteAdminRoleFromUser } from "../api/users";
 
 export const AdminRoles = ({user,rol}) => {
+  console.log(rol);
+  rol.then(function(response) {
+    console.log("Success!", response);
+    if(response === undefined){
+      console.log(response);
+      document.getElementById('roluser').innerHTML = 'Klant';
+    }else{
+      console.log(response);
+    }
+  });
+  console.log(rol.resolve);
+  if(rol.then(res => res) === undefined){
+    console.log('un');
+  }
+  else{
+    console.log('okk');
+  }
   const uitschrijven = async () =>{
     // Getting the management access api token
     const token = await getManagmentAccessApiToken();
@@ -18,13 +35,13 @@ export const AdminRoles = ({user,rol}) => {
      if(gett[0] === undefined){
        console.log('Dit moet een admin worden');
        const wordtAdmin = await assignRoleAdminToUser(token.access_token,user.user_id,process.env.REACT_APP_AUTH0_ROLE_ID);
-       // page refresh
+       window.location.reload();
        document.getElementById('roluser').innerHTML = 'Admin';
      }
      else{
        console.log('Dit moet een klant worden');
        const wordtKlant = await deleteAdminRoleFromUser(token.access_token,user.user_id,process.env.REACT_APP_AUTH0_ROLE_ID);
-       // page refresh
+       window.location.reload();
        document.getElementById('roluser').innerHTML = 'Klant';
      }
    

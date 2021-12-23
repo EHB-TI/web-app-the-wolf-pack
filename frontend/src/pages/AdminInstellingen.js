@@ -53,7 +53,9 @@ console.log(allusers.map(user => user));
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 {
-                 allusers.map(user => <AdminRoles user={user} rol={getRole(user)} key={user.user_id}/>)
+                 allusers.map(user => <AdminRoles user={user} rol={getRole(user).then(function(response) {
+                  return response
+                })} key={user.user_id}/>)
                 }
               </tbody>
             </table>

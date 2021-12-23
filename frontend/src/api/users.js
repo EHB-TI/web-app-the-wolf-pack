@@ -57,8 +57,8 @@ export async function assignRoleAdminToUser(accessToken,user_id,role_id){
   var options = {
     method: 'POST',
     url: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/users/${user_id}/roles`,
-    headers: { 'content-type': 'application/json',authorization: `Bearer ${accessToken}`, 'cache-control': 'no-cache'},
-    data: {roles: [role_id]},
+    headers: {'authorization': `Bearer ${accessToken}`},
+    data: {'roles': [role_id]},
   };
   const resp = await axios.request(options);
   return resp.data;
@@ -69,8 +69,8 @@ export async function deleteAdminRoleFromUser(accessToken,user_id,role_id){
   var options = {
     method: 'DELETE',
     url: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/api/v2/users/${user_id}/roles`,
-    headers: { 'content-type': 'application/json',authorization: `Bearer ${accessToken}`, 'cache-control': 'no-cache'},
-    data: {roles: [role_id]},
+    headers: {'authorization': `Bearer ${accessToken}`},
+    data: {'roles': [role_id]},
   };
   const resp = await axios.request(options);
   return resp.data;
