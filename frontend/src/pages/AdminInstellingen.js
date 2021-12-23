@@ -1,107 +1,61 @@
-import React from "react";
-import { getAllUsers, getManagmentAccessApiToken } from "../api/users";
+import React, { useEffect, useState } from "react";
+import { getAllUsers, getManagmentAccessApiToken,getRoleUser } from "../api/users";
 import { useAuth0 } from "@auth0/auth0-react";
 import SidebarAdmin from "../components/SidebarAdmin";
+import AdminRoles from "../components/AdminRoles";
 
 export const AdminInstellingen = () => {
 
-  // const { getAccessTokenSilently } = useAuth0();
-    
+  const[allusers,setAllusers] = useState([]);
 
-  // const getUsers = async () => {
-  //     const accessToken = await getAccessTokenSilently();
-  //     const status = await getAllUsers(accessToken);
-  //     if (status === 204){
-  //       window.location.reload();
-  //     }
-  // }
+  // Alle user opvragen en in die table steken
+  const getUsers = async () =>{
+    const token = await getManagmentAccessApiToken();
+    const users = await getAllUsers(token.access_token);
+    return users;
+  }
+  const getRole = async (user) =>{
+    const token = await getManagmentAccessApiToken();
+    const gett = await getRoleUser(token.access_token,user.user_id);
+    return gett[0]
+ }
+  useEffect(async () =>{
+    getUsers().then(allusers => setAllusers(allusers))
+  },[]);
 
-  // console.log(getUsers());
-  // const getToken = async () =>{
-  //   const status = await getManagmentAccessApiToken();
-  //   if (status === 204){
-  //     window.location.reload();
-  //   }
-  // }
-
-  // console.log(getToken());
-
+allusers.slice(1).map(user => user);
   return (
     <div className="App font-bold">
-      <div class="container mx-auto px-2 mt-16 text-left text-color-footer">
-        <div class="border-gray-300 flex flex-wrap">
+      <div className="container mx-auto px-2 mt-16 text-left text-color-footer">
+        <div className="border-gray-300 flex flex-wrap">
           <SidebarAdmin />
-          <div class="mt-2 ml-20 pr-20 float-right w-3/4 h-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
+          <div className="mt-2 ml-20 pr-20 float-right w-3/4 h-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
                 <tr>
                   <th
                     scope="col"
-                    class="px-6 py-3 text-left"
+                    className="px-6 py-3 text-left"
                   >
                     Email
                   </th>
                   <th
                     scope="col"
-                    class="px-6 py-3 text-left"
+                    className="px-6 py-3 text-left"
                   >
                     Role
                   </th>
                   <th scope="col" class="relative px-6 py-3">
-                    <span class="sr-only">Edit</span>
+                    <span className="sr-only">Edit</span>
                   </th>
                 </tr>
               </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <div>
-                        jane.cooper@example.com
-                      </div>
-                    </div>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <select>
-                      <option value="Klant">Klant</option>
-                      <option value="Beheerder">Beheerder</option>
-                    </select>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-right">
-                    <button class="ml-2 font-bold py-2 px-4">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-                        />
-                      </svg>
-                    </button>
-                    <button class="ml-2 font-bold py-2 px-4">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {
+                 allusers.slice(1).map(user => <AdminRoles user={user} rol={getRole(user).then(function(response) {
+                  return response;
+                })} key={user.user_id}/>)
+                }
               </tbody>
             </table>
           </div>

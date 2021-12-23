@@ -30,8 +30,8 @@ export const Winkelwagen = () => {
 
   const toStripeCheckout = (e) => {
     e.preventDefault();
-    console.log()
-    console.log("inside");
+    //console.log()
+    //console.log("inside");
     fetch ( `${process.env.REACT_APP_API_URL}/create-checkout-session`, {
       method: 'POST',
       headers: {

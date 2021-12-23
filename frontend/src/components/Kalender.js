@@ -77,10 +77,8 @@ export const Kalender = () => {
 
   // Als de editortemplate sluit de vertoning update met de extra data en de kalender refreshen (Is beter)
   const popupClose = async (args) => {
-    console.log("in popupclose");
     var film;
     if (args.type === "Editor" && !isNullOrUndefined(args.data)) {
-      console.log("In editor");
       // De film die gespeeld wordt
       let filmElement = args.element.querySelector("#Film");
       if (filmElement) {
@@ -103,7 +101,6 @@ export const Kalender = () => {
             const movie = await getMovieById(film._id);
             //Code voor het update van de film
             if (args.data.vertoning_id === "") {
-              console.log("if");
               // doe create
               args.data.vertoning_id = uuidv4()
               movie.vertoningen.push({
@@ -123,7 +120,6 @@ export const Kalender = () => {
               const accessToken = await getAccessTokenSilently();
               await UpdateMovie(film._id, accessToken, movie);
             } else {
-              console.log("else");
               movie.vertoningen.forEach((vertoning) => {
                 if (vertoning._id === args.data.vertoning_id) {
                   vertoning.datum = getLocalDateString(
