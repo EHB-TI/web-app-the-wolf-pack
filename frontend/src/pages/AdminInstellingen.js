@@ -23,7 +23,7 @@ export const AdminInstellingen = () => {
     getUsers().then(allusers => setAllusers(allusers))
   },[]);
 
-allusers.map(user => user);
+allusers.slice(1).map(user => user);
   return (
     <div className="App font-bold">
       <div className="container mx-auto px-2 mt-16 text-left text-color-footer">
@@ -52,7 +52,7 @@ allusers.map(user => user);
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {
-                 allusers.map(user => <AdminRoles user={user} rol={getRole(user).then(function(response) {
+                 allusers.slice(1).map(user => <AdminRoles user={user} rol={getRole(user).then(function(response) {
                   return response;
                 })} key={user.user_id}/>)
                 }
