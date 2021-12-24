@@ -23,7 +23,12 @@ export const AdminInstellingen = () => {
     getUsers().then(allusers => setAllusers(allusers))
   },[]);
 
-allusers.slice(1).map(user => user);
+allusers.map(user => user);
+for (var i = allusers.length - 1; i >= 0; --i) {
+  if (allusers[i].email == "admin@ehb.be") {
+      allusers.splice(i,1);
+  }
+}
   return (
     <div className="App font-bold">
       <div className="container mx-auto px-2 mt-16 text-left text-color-footer">
@@ -52,7 +57,8 @@ allusers.slice(1).map(user => user);
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {
-                 allusers.slice(1).map(user => <AdminRoles user={user} rol={getRole(user).then(function(response) {
+                  
+                 allusers.map(user => <AdminRoles user={user} rol={getRole(user).then(function(response) {
                   return response;
                 })} key={user.user_id}/>)
                 }
