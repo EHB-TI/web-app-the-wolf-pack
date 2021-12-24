@@ -7,13 +7,16 @@ export const UserInstellingen = () => {
   const {getIdTokenClaims} = useAuth0();
 
   const uitschrijven = async () =>{
-    // Getting the management access api token
-    const token = await getManagmentAccessApiToken();
-    // Current user that is logged in
-    const claims = await getIdTokenClaims();
-    // Deleting user
-    const user = await deleteUser(token.access_token,claims.sub);
-    window.location.href = '/';
+    
+    if (window.confirm('Are you sure you want to delete your account from our website ?')){
+        // Getting the management access api token
+      const token = await getManagmentAccessApiToken();
+      // Current user that is logged in
+      const claims = await getIdTokenClaims();
+      // Deleting user
+      await deleteUser(token.access_token,claims.sub);
+      window.location.href = '/';
+    }
   }
 
   return (

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { getAllUsers, getManagmentAccessApiToken,getRoleUser } from "../api/users";
-import { useAuth0 } from "@auth0/auth0-react";
 import SidebarAdmin from "../components/SidebarAdmin";
 import AdminRoles from "../components/AdminRoles";
 
