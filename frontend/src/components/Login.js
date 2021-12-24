@@ -65,17 +65,25 @@ const Login = ({ authorized }) => {
           aria-labelledby="menu-button"
           tabindex="-1"
         >
-          {authorized && (
+          {authorized ? (
+            <>
             <div class="py-3 px-2 text-lg text-color-footer" role="none">
               <a href="/admin/dashboard"> Dashboard </a>
             </div>
-          )}
-          <div class="py-3 px-2 text-lg text-color-footer" role="none">
-            <button onClick={() => logout()}> Sign out </button>
-          </div>
-          <div class="py-3 px-2 text-lg text-color-footer" role="none">
-            <button onClick={() => window.location = '/user/instellingen' }> UserDashboard </button>
-          </div>
+            <div class="py-3 px-2 text-lg text-color-footer" role="none">
+             <button onClick={() => logout()}> Sign out </button>
+           </div>
+           </>
+          ): (
+            <>
+               <div class="py-3 px-2 text-lg text-color-footer" role="none">
+                  <button onClick={() => window.location = '/user/instellingen' }> Dashboard </button>
+              </div>
+              <div class="py-3 px-2 text-lg text-color-footer" role="none">
+             <button onClick={() => logout()}> Sign out </button>
+           </div>
+            </>
+          ) }
         </div>
       </div>
     );
