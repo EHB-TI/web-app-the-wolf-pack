@@ -7,7 +7,7 @@ export const AdminRoles = ({user,rol}) => {
     // Getting the management access api token
     const token = await getManagmentAccessApiToken();
     // Deleting user
-    const del = await deleteUser(token.access_token,user.user_id);
+    await deleteUser(token.access_token,user.user_id);
     window.location.reload();
   }
   const changeRole = async () =>{
@@ -15,14 +15,16 @@ export const AdminRoles = ({user,rol}) => {
     const getrole = await getRoleUser(token.access_token,user.user_id);
 
      if(getrole[0] === undefined){
-       const wordtAdmin = await assignRoleAdminToUser(token.access_token,user.user_id,process.env.REACT_APP_AUTH0_ROLE_ID);
-       alert('De Klant krijgt de rol: Beheerder');
-       window.location.reload();
+       if (window.confirm('De gebruiker krijgt de rol: Beheerder')){
+          await assignRoleAdminToUser(token.access_token,user.user_id,process.env.REACT_APP_AUTH0_ROLE_ID);
+          window.location.reload();
+       }
      }
      else{
-       const wordtKlant = await deleteAdminRoleFromUser(token.access_token,user.user_id,process.env.REACT_APP_AUTH0_ROLE_ID);
-       alert('De Beheerder krijgt de rol: Klant');
-       window.location.reload();
+       if (window.confirm('De gebruiker krijgt de rol: Klant')){
+          await deleteAdminRoleFromUser(token.access_token,user.user_id,process.env.REACT_APP_AUTH0_ROLE_ID);
+          window.location.reload();
+       }
      }
   }
       return (
