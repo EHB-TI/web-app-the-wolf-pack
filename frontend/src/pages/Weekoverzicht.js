@@ -12,7 +12,7 @@ export const Weekoverzicht = () => {
   return (
     <div className="App font-bold flex-grow mb-3 text-color-footer">
       <div className="grid grid-cols-2 gap-2 place-content-start overflow-auto w-auto p-4">
-        {movies.filter(movie => movie.isReleased).map((movie) => (
+        {movies.filter(movie => movie.isReleased && movie.vertoningen.length > 0).map((movie) => (
           <>
             <div className="ml-20 mb-5">
               <Link to={`/movies/${movie._id}`}>
