@@ -29,7 +29,7 @@
     "firebase": "^9.5.0",
     "helmet": "^4.6.0",
     "jwks-rsa": "^2.0.5",
-    "mongoose": "^6.0.12",
+    "mongoose": "^6.11.3",
     "morgan": "^1.10.0",
     "pdfkit": "^0.13.0",
     "stripe": "^8.194.0",
